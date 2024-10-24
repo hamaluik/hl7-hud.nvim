@@ -41,6 +41,9 @@ return {
             require('hl7-hud').setup({
                 path = "/path/to/hl7-hud",
             })
+
+            vim.api.nvim_set_keymap("n", "<leader>hq", ":lua require('hl7-hud').query_input()<CR>", { silent = true })
+            vim.api.nvim_set_keymap("n", "<leader>ht", ":lua print(require('hl7-hud').cursor_timestamp())<CR>", { silent = true })
         end
     },
     {
@@ -65,15 +68,19 @@ return {
 
 ### Commands
 
-- `lua require('hl7-hud').hl7_query('<your HL7 query>')`: Move to the part of the
-  message that matches the query.
-- `lua require('hl7-hud').hl7_query_input()`: Same as `hl7_query`, but prompts
-  for the query.
-- `lua require('hl7-hud').hl7_cursor_pos()`: Get the current position of the cursor
-  in the message.
+- `lua require('hl7-hud').query('<your HL7 query>')`: Move to the part of the
+message that matches the query.
+- `lua require('hl7-hud').query_input()`: Same as `hl7_query`, but prompts
+for the query.
+- `lua require('hl7-hud').cursor_pos()`: Get the current position of the cursor
+in the message.
+- `lua require('hl7-hud').parse_timestamp('<HL7 timestamp>')`: Parse the timestamp
+  that is passed as an argument.
+- `lua require('hl7-hud').cursor_timestamp()`: Parse the timestamp that is
+  under the cursor
 
 ## TODO
 
-* [ ] Add more commands to navigate the message.
+* [ ] Add more commands to navigate the message (e.g. move to the next segment, field, etc).
 * [ ] Add more information to the lualine extension.
 * [ ] Switch to [nvim-oxi](https://crates.io/crates/nvim-oxi) ?

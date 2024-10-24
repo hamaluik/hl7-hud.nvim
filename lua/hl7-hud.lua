@@ -6,7 +6,7 @@ local function setup(opts)
     if opts and opts.path then
         path_to_hl7_hud = opts.path
     end
-    
+
     -- detect hl7 file types
     vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"},
         { group = augroup, desc = "Set filetype to hl7", pattern = "*.hl7", callback = function()
@@ -19,7 +19,7 @@ local buffer_to_string = function()
     return table.concat(content, "\r")
 end
 
-local function hl7_cursor_pos()
+local function cursor_pos()
     cursor_pos = vim.fn.getcurpos()
     buffer_offset = vim.fn.line2byte(cursor_pos[2]) + cursor_pos[3] - 1
 
@@ -36,7 +36,7 @@ local function hl7_cursor_pos()
     end
 end
 
-local function hl7_query(query)
+local function query(query)
     -- execute the hl7 hud binary
     local output = vim.system({path_to_hl7_hud, "q", query}, {
         text = true,
@@ -60,10 +60,42 @@ local function hl7_query(query)
     end
 end
 
-local function hl7_query_input()
+local function query_input()
     local query = vim.fn.input("HL7 Query: ")
     if query ~= "" then
-        hl7_query(query)
+        query(query)
+    end
+end
+
+local function parse_timestamp(timestamp)
+    -- execute the hl7 hud binary
+    local output = vim.system({path_to_hl7_hud, "t", timestamp}, {
+        text = true,
+        stdin = buffer_to_string(),
+    }):wait()
+
+    if output.code == 0 then
+        return vim.fn.trim(output.stdout)
+    else
+        print("Error: " .. vim.fn.trim(output.stderr))
+        return ""
+    end
+end
+
+local function cursor_timestamp()
+    cursor_pos = vim.fn.getcurpos()
+    buffer_offset = vim.fn.line2byte(cursor_pos[2]) + cursor_pos[3] - 1
+
+    -- execute the hl7 hud binary
+    local output = vim.system({path_to_hl7_hud, "tc", buffer_offset}, {
+        text = true,
+        stdin = buffer_to_string(),
+    }):wait()
+
+    if output.code == 0 then
+        return vim.fn.trim(output.stdout)
+    else
+        return "Error: " .. vim.fn.trim(output.stderr)
     end
 end
 
@@ -74,8 +106,16 @@ lualine_ext.sections = {
     lualine_c = {'filename'},
     lualine_x = {'encoding', 'fileformat', 'filetype'},
     lualine_y = {'progress'},
-    lualine_z = {'location', hl7_cursor_pos},
+    lualine_z = {'location', cursor_pos},
 }
 lualine_ext.filetypes = { "hl7" }
 
-return { setup = setup, hl7_cursor_pos = hl7_cursor_pos, hl7_query = hl7_query, hl7_query_input = hl7_query_input, lualine_ext = lualine_ext }
+return {
+    setup = setup,
+    cursor_pos = cursor_pos,
+    query = query,
+    query_input = query_input,
+    parse_timestamp = parse_timestamp,
+    cursor_timestamp = cursor_timestamp,
+    lualine_ext = lualine_ext
+}
