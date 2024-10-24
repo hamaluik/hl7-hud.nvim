@@ -43,6 +43,7 @@ return {
             })
 
             vim.api.nvim_set_keymap("n", "<leader>hq", ":lua require('hl7-hud').query_input()<CR>", { silent = true })
+            vim.api.nvim_set_keymap("n", "<leader>hp", ":lua print(require('hl7-hud').cursor_pos())<CR>", { silent = true })
             vim.api.nvim_set_keymap("n", "<leader>ht", ":lua print(require('hl7-hud').cursor_timestamp())<CR>", { silent = true })
         end
     },

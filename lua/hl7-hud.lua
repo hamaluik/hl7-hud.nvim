@@ -61,9 +61,9 @@ local function query(query)
 end
 
 local function query_input()
-    local query = vim.fn.input("HL7 Query: ")
-    if query ~= "" then
-        query(query)
+    local q = vim.fn.input("HL7 Query: ")
+    if q ~= "" then
+        query(q)
     end
 end
 
