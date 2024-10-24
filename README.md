@@ -6,6 +6,8 @@ This plugin is a simple plugin to help you to work with HL7 messages. It plugs
 into lualine to show where in an HL7 message you are, and it provides some
 commands to help you navigate the message.
 
+![Demo](./demo/demo.gif)
+
 ## Installation
 
 ### hl7-hud Binary
