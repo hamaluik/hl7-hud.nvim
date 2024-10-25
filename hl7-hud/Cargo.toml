@@ -1,8 +1,0 @@
-[package]
-name = "hl7-hud"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-hl7-parser = { path = "../../hl7-parser", features = ["chrono"] }
-chrono = { version = "0.4" }
