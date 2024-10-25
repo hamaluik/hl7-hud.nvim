@@ -10,4 +10,5 @@ crate-type = ["cdylib"]
 nvim-oxi = { version = "0.5", features = ["neovim-0-10"] }
 hl7-parser = { path = "../hl7-parser", features = ["chrono"] }
 chrono = { version = "0.4" }
+rand = { version = "0.8" }
 
