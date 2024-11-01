@@ -1,3 +1,5 @@
+** ARCHIVED; please use https://github.com/hamaluik/hl7-ls-nvim as it's better in basically every way **
+
 # hl7-hud.nvim
 
 ## Description
